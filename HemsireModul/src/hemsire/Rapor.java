@@ -9,6 +9,6 @@ package hemsire;
  *
  * @author seeda
  */
-public class Hemsire {
-   
+public class Rapor {
+    
 }
