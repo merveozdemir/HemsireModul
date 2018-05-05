@@ -9,6 +9,9 @@ package hemsire;
  *
  * @author seeda
  */
-public class Hemsire {
-   
+public class Doktor {
+     private int  hastaneId = 5, poliklinikId = 0;
+     String ad,soyad;
+     int id;
+     String unvan;
 }

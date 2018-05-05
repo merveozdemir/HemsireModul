@@ -7,7 +7,12 @@ package database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 /**
  *
@@ -17,7 +22,7 @@ public class DBConnection {
 
     public Connection connect() {
         Connection connection = null;
-   
+
         try {
 
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
@@ -29,10 +34,9 @@ public class DBConnection {
 
         }
 
-  
         try {
 
-            connection = DriverManager.getConnection("jdbc:derby://localhost:1527/HemsireModul", "seda", "123");
+            connection = DriverManager.getConnection("jdbc:derby://localhost:1527/HemsireModul", "a", "a");
 
         } catch (SQLException e) {
 
@@ -48,5 +52,108 @@ public class DBConnection {
         }
         return connection;
     }
+
+    public String girisSorgula(String kullaniciAd, String parola) {
+        String kullanici = "";
+        try {
+
+            String sql = "SELECT * FROM a.HEMSIRE WHERE KULLANICIADI='" + kullaniciAd + "' AND PAROLA='" + parola + "'";
+            Statement s = connect().createStatement();
+            ResultSet rs = s.executeQuery(sql);
+            while (rs.next()) {
+
+                if (rs.getString("KULLANICIADI").equals(kullaniciAd) && rs.getString("PAROLA").equals(parola)) {
+                    kullanici = rs.getString("KULLANICIADI");
+                    System.out.println(kullanici);
+                    return kullanici;
+
+                }
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return kullanici;
+
+    }
+        public String hemsireIsim(String kullaniciAd) {
+        String hemsireAdSoyad="";
+        try {
+
+            String sql = "SELECT * FROM a.HEMSIRE WHERE KULLANICIADI='" + kullaniciAd + "'";
+            Statement s = connect().createStatement();
+            ResultSet rs = s.executeQuery(sql);
+            while (rs.next()) {
+
+                if (rs.getString("KULLANICIADI").equals(kullaniciAd)) {
+                    hemsireAdSoyad = rs.getString("ADI")+" ";
+                    hemsireAdSoyad+=rs.getString("SOYADI");
+                    System.out.println(hemsireAdSoyad);
+                    return hemsireAdSoyad;
+
+                }
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
+
+    }
+        
+        
+        public String getPassword(String kullaniciAd){
+             String sifre="";
+        try {
+
+            String sql = "SELECT * FROM a.HEMSIRE WHERE KULLANICIADI='" + kullaniciAd + "'";
+            Statement s = connect().createStatement();
+            ResultSet rs = s.executeQuery(sql);
+            while (rs.next()) {
+
+                if (rs.getString("KULLANICIADI").equals(kullaniciAd)) {
+                    sifre = rs.getString("PAROLA");
+                    return sifre;
+
+                }
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
+
+        
+        }
+        
+        
+           public String kullaniciBilgiGuncelle(String kullaniciAd){
+         
+        try {
+
+            String sql = "SELECT * FROM a.HEMSIRE WHERE KULLANICIADI='" + kullaniciAd + "'";
+            Statement s = connect().createStatement();
+            ResultSet rs = s.executeQuery(sql);
+            while (rs.next()) {
+
+//                if (rs.getString("KULLANICIADI").equals(  sifre = rs.getString("SIFRE");
+//                    return sifre;
+//
+//                }
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
+
+        
+        }
+        
+
 
 }
