@@ -459,16 +459,16 @@ public class DBConnection {
     }
 
     public void hemsireAta(int hastaId, String hemsireAdSoyad) {
-String adSoyad[]=hemsireAdSoyad.split(" ");
-int hemsireId = 0;
-   Statement s;
+        String adSoyad[] = hemsireAdSoyad.split(" ");
+        int hemsireId = 0;
+        Statement s;
         try {
             s = connect().createStatement();
             ResultSet rs = s.executeQuery("Select ID FROM A.HEMSIRE WHERE ADI='" + adSoyad[0] + "' AND SOYADI='" + adSoyad[1] + "'");
 
             while (rs.next()) {
-            hemsireId=rs.getInt("ID");
-            break;
+                hemsireId = rs.getInt("ID");
+                break;
             }
         } catch (SQLException ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
@@ -480,9 +480,10 @@ int hemsireId = 0;
             ps = connect().prepareStatement(sql2);
 
             ps.setInt(1, hemsireId);
-          ps.setInt(2, hastaId);
-
-
+            ps.setInt(2, hastaId);
+            long millis = System.currentTimeMillis();
+            java.sql.Date date = new java.sql.Date(millis);
+            ps.setDate(3, date);
             ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
