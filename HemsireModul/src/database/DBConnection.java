@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -95,7 +96,7 @@ public class DBConnection {
 
         String sql = "SELECT * FROM a.HASTA";
         Statement s;
-
+        //"Konum", "Hasta No", "Hasta Adı", "Doktor Adı"
         try {
             s = connect().createStatement();
             ResultSet rs = s.executeQuery(sql);
@@ -109,7 +110,7 @@ public class DBConnection {
                 System.out.println(hastaId);
                 System.out.println(odaNo);
                 System.out.println(doktor);
-                dtm.addRow(new Object[]{false, odaNo, hastaId, hastaAdSoyad, doktor});
+                dtm.addRow(new Object[]{odaNo, hastaId, hastaAdSoyad, doktor});
             }
 
         } catch (SQLException ex) {
@@ -352,7 +353,7 @@ public class DBConnection {
             while (rs.next()) {
                 gorev = rs.getString("GOREVADI");
                 saat = rs.getTime("BASLANGICSAATI");
-                satirNo = saat.toString().lastIndexOf(":");
+                satirNo = saat.toString().lastIndexOf(".");
                 gorevDurum = rs.getString("GOREVDURUM");
                 dtm.setValueAt(gorev, satirNo, 1);
 
@@ -459,16 +460,16 @@ public class DBConnection {
     }
 
     public void hemsireAta(int hastaId, String hemsireAdSoyad) {
-String adSoyad[]=hemsireAdSoyad.split(" ");
-int hemsireId = 0;
-   Statement s;
+        String adSoyad[] = hemsireAdSoyad.split(" ");
+        int hemsireId = 0;
+        Statement s;
         try {
             s = connect().createStatement();
             ResultSet rs = s.executeQuery("Select ID FROM A.HEMSIRE WHERE ADI='" + adSoyad[0] + "' AND SOYADI='" + adSoyad[1] + "'");
 
             while (rs.next()) {
-            hemsireId=rs.getInt("ID");
-            break;
+                hemsireId = rs.getInt("ID");
+                break;
             }
         } catch (SQLException ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
@@ -480,13 +481,107 @@ int hemsireId = 0;
             ps = connect().prepareStatement(sql2);
 
             ps.setInt(1, hemsireId);
-          ps.setInt(2, hastaId);
-
+            ps.setInt(2, hastaId);
 
             ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public void ayrintiliHastaBilgisi(DefaultTableModel dtmTumHastalar) {
+
+        String sql = "SELECT * FROM a.HASTA";
+        Statement s;
+
+        try {
+            s = connect().createStatement();
+            ResultSet rs = s.executeQuery(sql);
+            while (rs.next()) {
+
+                // "Hasta No", "Hasta Adı","Hasta Soyadı", "Doktor Adı","Hemşire Adı"
+                dtmTumHastalar.addRow(new Object[]{rs.getInt("HASTAID"), rs.getString("HASTAADI"), rs.getString("HASTASOYADI"), rs.getString("doktor")});
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void sorgula(DefaultTableModel dtmSorgu,String hastaNo, String hastaAdi, String hastaSoyadi) {
+        boolean hastaNoMu = false;
+        boolean hastaAdiMi = false;
+        boolean hastaSoyadiMi = false;
+
+        if (!hastaNo.equals(" ")) {
+            hastaNoMu = true;
+           int hastaTc=Integer.valueOf(hastaNo);
+            String sql = "SELECT * FROM a.HASTA where HASTAID=" + hastaTc;
+            Statement s;
+
+            try {
+                s = connect().createStatement();
+                ResultSet rs = s.executeQuery(sql);
+                while (rs.next()) {
+
+                    dtmSorgu.addRow(new Object[]{rs.getInt("HASTAID"), rs.getString("HASTAADI"), rs.getString("HASTASOYADI"),rs.getString("DOKTOR")});
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else if (!hastaAdi.equals(" ")) {
+            hastaAdiMi = true;
+            String sql = "SELECT * FROM a.HASTA where  HASTAADI='" + hastaAdi + "'";
+            Statement s;
+
+            try {
+                s = connect().createStatement();
+                ResultSet rs = s.executeQuery(sql);
+                while (rs.next()) {
+
+                 dtmSorgu.addRow(new Object[]{rs.getInt("HASTAID"), rs.getString("HASTAADI"), rs.getString("HASTASOYADI"),rs.getString("DOKTOR")});
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else if (!hastaSoyadi.equals(" ")) {
+            hastaSoyadiMi = true;
+            String sql = "SELECT * FROM a.HASTA where  HASTASOYADI='" + hastaSoyadi + "'";
+            Statement s;
+
+            try {
+                s = connect().createStatement();
+                ResultSet rs = s.executeQuery(sql);
+                while (rs.next()) {
+
+                     dtmSorgu.addRow(new Object[]{rs.getInt("HASTAID"), rs.getString("HASTAADI"), rs.getString("HASTASOYADI"),rs.getString("DOKTOR")});
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+    }
+
+    public void sorgula(DefaultTableModel dtmSorgu,String hastaAdi) {
+        //"TC No", "Hasta Adı", "Hasta Soyadı", "Doktor Adı"
+ String sql = "SELECT * FROM a.HASTA where  HASTAADI='" + hastaAdi + "'";
+            Statement s;
+
+            try {
+                s = connect().createStatement();
+                ResultSet rs = s.executeQuery(sql);
+                while (rs.next()) {
+
+                    dtmSorgu.addRow(new Object[]{rs.getInt("HASTAID"), rs.getString("HASTAADI"), rs.getString("HASTASOYADI"),rs.getString("DOKTOR")});
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+            }
     }
 
 }

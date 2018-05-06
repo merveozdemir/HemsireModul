@@ -78,7 +78,7 @@ public class shiftYonetimiPaneli extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         hastaTablosu = new javax.swing.JTable();
-        jButton6 = new javax.swing.JButton();
+        goruntule = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
@@ -212,12 +212,12 @@ public class shiftYonetimiPaneli extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jButton6.setBackground(new java.awt.Color(51, 102, 255));
-        jButton6.setForeground(new java.awt.Color(255, 255, 255));
-        jButton6.setText("Görüntüle");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        goruntule.setBackground(new java.awt.Color(51, 102, 255));
+        goruntule.setForeground(new java.awt.Color(255, 255, 255));
+        goruntule.setText("Görüntüle");
+        goruntule.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                goruntuleActionPerformed(evt);
             }
         });
 
@@ -248,7 +248,7 @@ public class shiftYonetimiPaneli extends javax.swing.JPanel {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton6)
+                    .addComponent(goruntule)
                     .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(22, 22, 22)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -273,7 +273,7 @@ public class shiftYonetimiPaneli extends javax.swing.JPanel {
                     .addComponent(jButton3)
                     .addComponent(jButton5)
                     .addComponent(jButton2)
-                    .addComponent(jButton6))
+                    .addComponent(goruntule))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -297,22 +297,20 @@ public class shiftYonetimiPaneli extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        ResetDtm();
+    private void goruntuleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goruntuleActionPerformed
+ ResetDtm();
 
-        if(jList1.getSelectedIndex() == 0){ //tüm hastalar
+        if (hemsilerListesi.getSelectedIndex() == 0) { //tüm hastalar
             d.ListeleTumHastalar(dtm);
 
-        }
-        else if(jList1.getSelectedIndex() == 1){ //atanmamış hastalar
+        } else if (hemsilerListesi.getSelectedIndex() == 1) { //atanmamış hastalar
             d.atanmisHastalar(dtm);
-        }
-        else if(jList1.getSelectedIndex()==2){
+        } else if (hemsilerListesi.getSelectedIndex() == 2) {
 
             d.atanmamisHastalar(dtm);
-        }
+        }       
 
-    }//GEN-LAST:event_jButton6ActionPerformed
+    }//GEN-LAST:event_goruntuleActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
@@ -320,35 +318,23 @@ public class shiftYonetimiPaneli extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton goruntule;
     private javax.swing.JTable hastaTablosu;
     private javax.swing.JList<String> hemsilerListesi;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JComboBox<String> jComboBox4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JList<String> jList2;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     // End of variables declaration//GEN-END:variables
 }

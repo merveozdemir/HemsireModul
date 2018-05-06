@@ -5,6 +5,10 @@
  */
 package hemsire;
 
+import database.DBConnection;
+import java.util.Locale;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Merve
@@ -14,12 +18,39 @@ public class hastaAraPaneli extends javax.swing.JPanel {
     /**
      * Creates new form hastaAraPaneli
      */
+    public anasayfaPaneli anasayfa;
+    public ajandaPaneli ajanda;
+    public hastaAraPaneli hastaAra;
+    public shiftYonetimiPaneli shiftYonetimi;
+    public kullaniciAyarlar kullaniciAyar;
+    public Giris girisSayfasi;
+    DBConnection d;
+    DefaultTableModel dtmTumHastalar, dtmSorgu;
+
     public hastaAraPaneli(Ekran ekran) {
         initComponents();
         this.setSize(950, 450);
+        d = new DBConnection();
+        ResetTumHastalarTablosuDtm();
+        sorguTablosuDtm();
+        d.ayrintiliHastaBilgisi(dtmTumHastalar);
+
     }
 
-   
+    void ResetTumHastalarTablosuDtm() {
+        dtmTumHastalar = new DefaultTableModel();
+        dtmTumHastalar.setColumnIdentifiers(new String[]{"TC No", "Hasta Adı", "Hasta Soyadı", "Doktor Adı"});
+        tumHastalarTablosu.setModel(dtmTumHastalar);
+
+    }
+
+    void sorguTablosuDtm() {
+        dtmSorgu = new DefaultTableModel();
+        dtmSorgu.setColumnIdentifiers(new String[]{"TC No", "Hasta Adı", "Hasta Soyadı", "Doktor Adı"});
+        sorguSonuclarTablosu.setModel(dtmSorgu);
+
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -31,7 +62,10 @@ public class hastaAraPaneli extends javax.swing.JPanel {
 
         hastaAraPaneli = new javax.swing.JPanel();
         TabbedPanes = new javax.swing.JTabbedPane();
-        yatabHastalar = new javax.swing.JPanel();
+        sorguSonuclari = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        sorguSonuclarTablosu = new javax.swing.JTable();
+        yatanHastalar = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         jComboBox1 = new javax.swing.JComboBox<>();
         jComboBox2 = new javax.swing.JComboBox<>();
@@ -39,31 +73,59 @@ public class hastaAraPaneli extends javax.swing.JPanel {
         jLabel20 = new javax.swing.JLabel();
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
-        jButton5 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         tumHastalar = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tumHastalarTablosu = new javax.swing.JTable();
         calisilanlar = new javax.swing.JPanel();
         randevular = new javax.swing.JPanel();
         hastaAramaPaneli = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        hastaNo = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        hastaAdi = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        hastaSoyadi = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jLabel17 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
-        jLabel18 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         hastaAraPaneli.setBackground(new java.awt.Color(255, 255, 255));
         hastaAraPaneli.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 255)), "Hasta Konsolu"));
         hastaAraPaneli.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        sorguSonuclarTablosu.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane3.setViewportView(sorguSonuclarTablosu);
+
+        javax.swing.GroupLayout sorguSonuclariLayout = new javax.swing.GroupLayout(sorguSonuclari);
+        sorguSonuclari.setLayout(sorguSonuclariLayout);
+        sorguSonuclariLayout.setHorizontalGroup(
+            sorguSonuclariLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(sorguSonuclariLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 881, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        sorguSonuclariLayout.setVerticalGroup(
+            sorguSonuclariLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(sorguSonuclariLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        TabbedPanes.addTab("Sorgu Sonuçları", sorguSonuclari);
 
         jPanel8.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -79,7 +141,14 @@ public class hastaAraPaneli extends javax.swing.JPanel {
 
         jRadioButton2.setText("Hastalarım");
 
-        jButton5.setText("Shift Yönetimi");
+        jButton3.setBackground(new java.awt.Color(51, 102, 255));
+        jButton3.setForeground(new java.awt.Color(255, 255, 255));
+        jButton3.setText("Shift Yönetimi");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -98,10 +167,10 @@ public class hastaAraPaneli extends javax.swing.JPanel {
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addComponent(jRadioButton1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton5))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jRadioButton2))
-                .addContainerGap(175, Short.MAX_VALUE))
+                .addContainerGap(357, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -110,9 +179,10 @@ public class hastaAraPaneli extends javax.swing.JPanel {
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel19)
-                        .addComponent(jButton5))
-                    .addComponent(jRadioButton1, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addComponent(jLabel19))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jRadioButton1)
+                        .addComponent(jButton3)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -134,20 +204,20 @@ public class hastaAraPaneli extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        javax.swing.GroupLayout yatabHastalarLayout = new javax.swing.GroupLayout(yatabHastalar);
-        yatabHastalar.setLayout(yatabHastalarLayout);
-        yatabHastalarLayout.setHorizontalGroup(
-            yatabHastalarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(yatabHastalarLayout.createSequentialGroup()
+        javax.swing.GroupLayout yatanHastalarLayout = new javax.swing.GroupLayout(yatanHastalar);
+        yatanHastalar.setLayout(yatanHastalarLayout);
+        yatanHastalarLayout.setHorizontalGroup(
+            yatanHastalarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(yatanHastalarLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addGroup(yatabHastalarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1)
-                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(yatanHastalarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
+                .addContainerGap())
         );
-        yatabHastalarLayout.setVerticalGroup(
-            yatabHastalarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(yatabHastalarLayout.createSequentialGroup()
+        yatanHastalarLayout.setVerticalGroup(
+            yatanHastalarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(yatanHastalarLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(13, 13, 13)
@@ -155,11 +225,11 @@ public class hastaAraPaneli extends javax.swing.JPanel {
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
-        TabbedPanes.addTab("Yatan Hastalar", yatabHastalar);
+        TabbedPanes.addTab("Yatan Hastalar", yatanHastalar);
 
         tumHastalar.setPreferredSize(new java.awt.Dimension(250, 234));
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tumHastalarTablosu.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -170,23 +240,23 @@ public class hastaAraPaneli extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(tumHastalarTablosu);
 
         javax.swing.GroupLayout tumHastalarLayout = new javax.swing.GroupLayout(tumHastalar);
         tumHastalar.setLayout(tumHastalarLayout);
         tumHastalarLayout.setHorizontalGroup(
             tumHastalarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tumHastalarLayout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 588, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(138, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 881, Short.MAX_VALUE)
+                .addContainerGap())
         );
         tumHastalarLayout.setVerticalGroup(
             tumHastalarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tumHastalarLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         TabbedPanes.addTab("Tüm Hastalar", tumHastalar);
@@ -195,7 +265,7 @@ public class hastaAraPaneli extends javax.swing.JPanel {
         calisilanlar.setLayout(calisilanlarLayout);
         calisilanlarLayout.setHorizontalGroup(
             calisilanlarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 755, Short.MAX_VALUE)
+            .addGap(0, 905, Short.MAX_VALUE)
         );
         calisilanlarLayout.setVerticalGroup(
             calisilanlarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -208,7 +278,7 @@ public class hastaAraPaneli extends javax.swing.JPanel {
         randevular.setLayout(randevularLayout);
         randevularLayout.setHorizontalGroup(
             randevularLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 755, Short.MAX_VALUE)
+            .addGap(0, 905, Short.MAX_VALUE)
         );
         randevularLayout.setVerticalGroup(
             randevularLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -217,24 +287,27 @@ public class hastaAraPaneli extends javax.swing.JPanel {
 
         TabbedPanes.addTab("Randevular", randevular);
 
-        hastaAraPaneli.add(TabbedPanes, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 90, 760, 290));
+        hastaAraPaneli.add(TabbedPanes, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 910, 290));
 
         hastaAramaPaneli.setBackground(new java.awt.Color(153, 153, 255));
 
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
         jLabel13.setText("Hasta Arama");
 
-        jLabel14.setText("Hasta No");
+        jLabel14.setText("TC No");
 
         jLabel15.setText("Adı");
 
         jLabel16.setText("Soyadı");
 
-        jLabel17.setText("TC No");
-
-        jLabel18.setText("Doğum Yılı");
-
-        jButton4.setText("Sorgula");
+        jButton2.setBackground(new java.awt.Color(51, 102, 255));
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setText("Sorgula");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout hastaAramaPaneliLayout = new javax.swing.GroupLayout(hastaAramaPaneli);
         hastaAramaPaneli.setLayout(hastaAramaPaneliLayout);
@@ -246,26 +319,18 @@ public class hastaAraPaneli extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(hastaAramaPaneliLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
-                    .addComponent(jTextField1))
+                    .addComponent(hastaNo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(hastaAramaPaneliLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(hastaAramaPaneliLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(hastaAdi, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(hastaAramaPaneliLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(hastaSoyadi, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(hastaAramaPaneliLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(hastaAramaPaneliLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(73, 73, 73)
-                .addComponent(jButton4)
-                .addContainerGap(153, Short.MAX_VALUE))
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(499, Short.MAX_VALUE))
         );
         hastaAramaPaneliLayout.setVerticalGroup(
             hastaAramaPaneliLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -273,36 +338,23 @@ public class hastaAraPaneli extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(hastaAramaPaneliLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(hastaAramaPaneliLayout.createSequentialGroup()
-                        .addComponent(jLabel18)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(hastaAramaPaneliLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel16)
+                        .addGap(26, 26, 26))
                     .addGroup(hastaAramaPaneliLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel15)
                         .addGroup(hastaAramaPaneliLayout.createSequentialGroup()
-                            .addComponent(jLabel17)
+                            .addComponent(jLabel14)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(hastaAramaPaneliLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(hastaAramaPaneliLayout.createSequentialGroup()
-                                .addComponent(jLabel16)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(hastaAramaPaneliLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(hastaAramaPaneliLayout.createSequentialGroup()
-                                    .addComponent(jLabel15)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(hastaAramaPaneliLayout.createSequentialGroup()
-                                    .addComponent(jLabel14)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addGroup(hastaAramaPaneliLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel13)
-                                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                            .addGroup(hastaAramaPaneliLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel13)
+                                .addComponent(hastaNo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(hastaAdi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(hastaSoyadi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButton2)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        hastaAraPaneli.add(hastaAramaPaneli, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 20, 760, 60));
+        hastaAraPaneli.add(hastaAramaPaneli, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 910, 60));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -311,8 +363,8 @@ public class hastaAraPaneli extends javax.swing.JPanel {
             .addGap(0, 942, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addComponent(hastaAraPaneli, javax.swing.GroupLayout.PREFERRED_SIZE, 942, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addComponent(hastaAraPaneli, javax.swing.GroupLayout.DEFAULT_SIZE, 930, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -324,22 +376,33 @@ public class hastaAraPaneli extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        sorguTablosuDtm();
+
+        d.sorgula(dtmSorgu,hastaNo.getText(), hastaAdi.getText(), hastaSoyadi.getText());
+    }//GEN-LAST:event_jButton2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane TabbedPanes;
     private javax.swing.JPanel calisilanlar;
+    private javax.swing.JTextField hastaAdi;
     private javax.swing.JPanel hastaAraPaneli;
     private javax.swing.JPanel hastaAramaPaneli;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JTextField hastaNo;
+    private javax.swing.JTextField hastaSoyadi;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JPanel jPanel8;
@@ -347,15 +410,13 @@ public class hastaAraPaneli extends javax.swing.JPanel {
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
     private javax.swing.JPanel randevular;
+    private javax.swing.JTable sorguSonuclarTablosu;
+    private javax.swing.JPanel sorguSonuclari;
     private javax.swing.JPanel tumHastalar;
-    private javax.swing.JPanel yatabHastalar;
+    private javax.swing.JTable tumHastalarTablosu;
+    private javax.swing.JPanel yatanHastalar;
     // End of variables declaration//GEN-END:variables
 }
