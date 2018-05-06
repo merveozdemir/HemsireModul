@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -113,6 +115,27 @@ public class DBConnection {
         } catch (SQLException ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+    }
+
+    public int tumHastaSayisi() {
+        int hastaSayisi = 0;
+
+        String sql = "SELECT * FROM a.HASTA";
+        Statement s;
+
+        try {
+            s = connect().createStatement();
+            ResultSet rs = s.executeQuery(sql);
+            while (rs.next()) {
+                hastaSayisi++;
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return hastaSayisi;
 
     }
 
@@ -322,19 +345,145 @@ public class DBConnection {
         Time saat;
         String gorev;
         String gorevDurum;
-        int  satirNo;
+        int satirNo;
         try {
             s = connect().createStatement();
             ResultSet rs = s.executeQuery(sql);
             while (rs.next()) {
                 gorev = rs.getString("GOREVADI");
                 saat = rs.getTime("BASLANGICSAATI");
-                satirNo=saat.toString().lastIndexOf(":");
+                satirNo = saat.toString().lastIndexOf(":");
                 gorevDurum = rs.getString("GOREVDURUM");
-               dtm.setValueAt(gorev, satirNo, 1);
-              
+                dtm.setValueAt(gorev, satirNo, 1);
+
             }
 
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public int atanmisHastaSayisi() {
+        int atanmisHastaSayisi = 0;
+
+        String sql = "SELECT * FROM a.Hemsire_Hasta hh inner join Hasta h on h.HASTAID=hh.HASTAID ";
+        Statement s;
+
+        try {
+            s = connect().createStatement();
+            ResultSet rs = s.executeQuery(sql);
+            while (rs.next()) {
+                atanmisHastaSayisi++;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return atanmisHastaSayisi;
+
+    }
+
+    public int atanmamisHastaSayisi() {
+
+        int atanmamisHastaSayisi = 0;
+        String sql = "SELECT * FROM a.Hasta WHERE HASTAID NOT IN (SELECT HASTAID FROM a.HEMSIRE_HASTA)  ";
+        Statement s;
+
+        try {
+            s = connect().createStatement();
+            ResultSet rs = s.executeQuery(sql);
+            while (rs.next()) {
+                atanmamisHastaSayisi++;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return atanmamisHastaSayisi;
+    }
+
+    public void hemsireler(DefaultListModel dlm) {
+        String hemsireAdSoyad;
+
+        String sql = "SELECT * FROM a.HEMSIRE";
+        Statement s;
+
+        try {
+            s = connect().createStatement();
+            ResultSet rs = s.executeQuery(sql);
+            while (rs.next()) {
+                hemsireAdSoyad = rs.getString("ADI") + " ";
+                hemsireAdSoyad += rs.getString("SOYADI");
+                dlm.addElement(hemsireAdSoyad);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void hemsireBul(DefaultComboBoxModel dcm) {
+        Statement s;
+        try {
+            s = connect().createStatement();
+            // ResultSet rs = s.executeQuery("select * from a.hemsire where ADI like'" + a + "'");
+            ResultSet rs = s.executeQuery("select * from a.HEMSIRE");
+            while (rs.next()) {
+
+                dcm.addElement(rs.getString("ADI") + " " + rs.getString("SOYADI"));
+            }
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
+    }
+
+    public void hemsireBul(DefaultComboBoxModel dcm, String a) {
+        Statement s;
+        try {
+            s = connect().createStatement();
+            ResultSet rs = s.executeQuery("select * from a.hemsire where ADI like'" + a + "'");
+
+            while (rs.next()) {
+
+                dcm.addElement(rs.getString("ADI") + " " + rs.getString("SOYADI"));
+            }
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
+    }
+
+    public void hemsireAta(int hastaId, String hemsireAdSoyad) {
+String adSoyad[]=hemsireAdSoyad.split(" ");
+int hemsireId = 0;
+   Statement s;
+        try {
+            s = connect().createStatement();
+            ResultSet rs = s.executeQuery("Select ID FROM A.HEMSIRE WHERE ADI='" + adSoyad[0] + "' AND SOYADI='" + adSoyad[1] + "'");
+
+            while (rs.next()) {
+            hemsireId=rs.getInt("ID");
+            break;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String sql2 = "INSERT INTO HEMSIRE_HASTA (HEMSIREID,HASTAID) VALUES (?,?)";
+        PreparedStatement ps;
+
+        try {
+            ps = connect().prepareStatement(sql2);
+
+            ps.setInt(1, hemsireId);
+          ps.setInt(2, hastaId);
+
+
+            ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -7,6 +7,9 @@ package hemsire;
 
 import database.DBConnection;
 import java.util.List;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import sun.swing.table.DefaultTableCellHeaderRenderer;
 
@@ -15,8 +18,14 @@ import sun.swing.table.DefaultTableCellHeaderRenderer;
  * @author Merve
  */
 public class shiftYonetimiPaneli extends javax.swing.JPanel {
-         DBConnection d;
-         DefaultTableModel dtm;
+
+    DBConnection d;
+    DefaultTableModel dtm;
+    int toplamHastaSayisi = 0;
+    int atanmamisHastaSayisi = 0;
+    int atanmisHastaSayisi = 0;
+    private DefaultListModel dlm;
+
     /**
      * Creates new form shiftYonetimiPaneli
      */
@@ -24,6 +33,19 @@ public class shiftYonetimiPaneli extends javax.swing.JPanel {
         initComponents();
         d = new DBConnection();
         ResetDtm();
+        resetList();
+        dlm.addElement("Tüm Hastalar                             " + d.tumHastaSayisi());
+        dlm.addElement("Atanmış Hastalar                       " + d.atanmisHastaSayisi());
+        dlm.addElement("Atanmamış Hastalar                 " + d.atanmamisHastaSayisi());
+        d.hemsireler(dlm);
+
+    }
+
+    public void resetList() {
+        dlm = new DefaultListModel();
+        hemsilerListesi.setModel(dlm);
+        hemsilerListesi.setVisible(true);
+
     }
 
     void ResetDtm() {
@@ -31,6 +53,7 @@ public class shiftYonetimiPaneli extends javax.swing.JPanel {
         dtm.setColumnIdentifiers(new String[]{"Seç", "Konum", "Hasta No", "Hasta Adı", "Doktor Adı"});
         hastaTablosu.setModel(dtm);
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -44,7 +67,7 @@ public class shiftYonetimiPaneli extends javax.swing.JPanel {
         jComboBox1 = new javax.swing.JComboBox<>();
         jButton4 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        hemsilerListesi = new javax.swing.JList<>();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jComboBox2 = new javax.swing.JComboBox<>();
@@ -60,6 +83,7 @@ public class shiftYonetimiPaneli extends javax.swing.JPanel {
 
         setPreferredSize(new java.awt.Dimension(800, 440));
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tüm Konumlar" }));
@@ -73,12 +97,13 @@ public class shiftYonetimiPaneli extends javax.swing.JPanel {
             }
         });
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+        hemsilerListesi.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        hemsilerListesi.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Tüm Hastalar", "Atanmış Hastalar", "Atanmamış Hastalar", " " };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane2.setViewportView(jList1);
+        jScrollPane2.setViewportView(hemsilerListesi);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -88,8 +113,8 @@ public class shiftYonetimiPaneli extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2)
-                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -100,8 +125,8 @@ public class shiftYonetimiPaneli extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -199,6 +224,11 @@ public class shiftYonetimiPaneli extends javax.swing.JPanel {
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/hemsireDegistirIcon.png"))); // NOI18N
         jButton2.setText("Hemşire Ata");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setBackground(new java.awt.Color(51, 102, 255));
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
@@ -278,25 +308,38 @@ public class shiftYonetimiPaneli extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-       ResetDtm();
-      
-       if(jList1.getSelectedIndex() == 0){ //tüm hastalar
-          d.ListeleTumHastalar(dtm);
+        ResetDtm();
+
+        if (hemsilerListesi.getSelectedIndex() == 0) { //tüm hastalar
+            d.ListeleTumHastalar(dtm);
+
+        } else if (hemsilerListesi.getSelectedIndex() == 1) { //atanmış hastalar
+            d.atanmisHastalar(dtm);
+
+        } else if (hemsilerListesi.getSelectedIndex() == 2) {//atanmamış hastalar
+
+            d.atanmamisHastalar(dtm);
 
         }
-        else if(jList1.getSelectedIndex() == 1){ //atanmamış hastalar
-         d.atanmisHastalar(dtm);
-        }
-        else if(jList1.getSelectedIndex()==2){
-         
-        d.atanmamisHastalar(dtm);
-        }
-        
+
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+       int satir= hastaTablosu.getSelectedRow();
+        if (satir<0) {
+            JOptionPane.showMessageDialog(this, "Tablodan hasta seçiniz!");
+        } else {
+            HemsireAta h = new HemsireAta(Integer.valueOf(hastaTablosu.getValueAt(hastaTablosu.getSelectedRow(), 2).toString()));
+            h.setVisible(true);
+        }
+
+
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable hastaTablosu;
+    private javax.swing.JList<String> hemsilerListesi;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -308,7 +351,6 @@ public class shiftYonetimiPaneli extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
