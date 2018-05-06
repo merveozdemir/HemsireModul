@@ -131,7 +131,7 @@ public class anasayfaPaneli extends javax.swing.JPanel {
             .addGap(0, 287, Short.MAX_VALUE)
         );
 
-        anasayfaPaneli.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 40, 550, 310));
+        anasayfaPaneli.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 30, 550, 310));
 
         jPanel6.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel6.setPreferredSize(new java.awt.Dimension(173, 72));
@@ -167,23 +167,21 @@ public class anasayfaPaneli extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(anasayfaPaneli, javax.swing.GroupLayout.PREFERRED_SIZE, 798, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(anasayfaPaneli, javax.swing.GroupLayout.DEFAULT_SIZE, 943, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(anasayfaPaneli, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(anasayfaPaneli, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        ekran1.hastaAra.setVisible(true);
-      //  hastaAra.setVisible(true);
-         this.setVisible(false);
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        this.setVisible(false);
         ekran1.ajanda.setVisible(false);
-        ekran1.shiftYonetimi.setVisible(false);
-    }//GEN-LAST:event_jButton2ActionPerformed
+        ekran1.hastaAra.setVisible(false);
+        //shiftYonetimi.setVisible(true);
+        ekran1.shiftYonetimi.setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
@@ -194,13 +192,13 @@ public class anasayfaPaneli extends javax.swing.JPanel {
         ekran1.shiftYonetimi.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        ekran1.hastaAra.setVisible(true);
+        //  hastaAra.setVisible(true);
         this.setVisible(false);
         ekran1.ajanda.setVisible(false);
-        ekran1.hastaAra.setVisible(false);
-        //shiftYonetimi.setVisible(true);
-        ekran1.shiftYonetimi.setVisible(true);
-    }//GEN-LAST:event_jButton3ActionPerformed
+        ekran1.shiftYonetimi.setVisible(false);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
