@@ -68,7 +68,7 @@ public class hastaAraPaneli extends javax.swing.JPanel {
         calisilanlar.setLayout(calisilanlarLayout);
         calisilanlarLayout.setHorizontalGroup(
             calisilanlarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 695, Short.MAX_VALUE)
+            .addGap(0, 755, Short.MAX_VALUE)
         );
         calisilanlarLayout.setVerticalGroup(
             calisilanlarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -81,7 +81,7 @@ public class hastaAraPaneli extends javax.swing.JPanel {
         randevular.setLayout(randevularLayout);
         randevularLayout.setHorizontalGroup(
             randevularLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 695, Short.MAX_VALUE)
+            .addGap(0, 755, Short.MAX_VALUE)
         );
         randevularLayout.setVerticalGroup(
             randevularLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -115,13 +115,10 @@ public class hastaAraPaneli extends javax.swing.JPanel {
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel19)
                     .addComponent(jLabel20))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createSequentialGroup()
@@ -171,7 +168,7 @@ public class hastaAraPaneli extends javax.swing.JPanel {
                 .addGroup(yatabHastalarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1)
                     .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(47, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         yatabHastalarLayout.setVerticalGroup(
             yatabHastalarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -207,7 +204,7 @@ public class hastaAraPaneli extends javax.swing.JPanel {
             .addGroup(tumHastalarLayout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 588, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addContainerGap(138, Short.MAX_VALUE))
         );
         tumHastalarLayout.setVerticalGroup(
             tumHastalarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -219,7 +216,7 @@ public class hastaAraPaneli extends javax.swing.JPanel {
 
         TabbedPanes.addTab("Tüm Hastalar", tumHastalar);
 
-        hastaAraPaneli.add(TabbedPanes, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, 700, 290));
+        hastaAraPaneli.add(TabbedPanes, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 760, 290));
 
         hastaAramaPaneli.setBackground(new java.awt.Color(153, 153, 153));
 

@@ -70,6 +70,12 @@ public class Giris extends javax.swing.JFrame {
 
         kullaniciAdi.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.lightGray, java.awt.Color.white, null, null));
 
+        sifre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sifreActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -128,7 +134,7 @@ public class Giris extends javax.swing.JFrame {
         System.out.println(parola);
         DBConnection db = new DBConnection();
         String kullanici = db.girisSorgula(kullaniciAd, parola);
-        
+
         System.out.println(kullanici);
         if (!kullanici.equals("")) {
             this.setVisible(false);
@@ -140,6 +146,24 @@ public class Giris extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_loginMouseClicked
+
+    private void sifreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sifreActionPerformed
+        String kullaniciAd = kullaniciAdi.getText();
+        String parola = String.valueOf(sifre.getPassword());
+        System.out.println(parola);
+        DBConnection db = new DBConnection();
+        String kullanici = db.girisSorgula(kullaniciAd, parola);
+
+        System.out.println(kullanici);
+        if (!kullanici.equals("")) {
+            this.setVisible(false);
+            this.dispose();
+            Ekran e = new Ekran(kullanici);
+            e.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Kullanıcı adı ya da parola hatalı !");
+        }
+    }//GEN-LAST:event_sifreActionPerformed
 
     /**
      * @param args the command line arguments

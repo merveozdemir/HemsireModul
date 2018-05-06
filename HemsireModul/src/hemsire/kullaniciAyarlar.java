@@ -12,24 +12,26 @@ import database.DBConnection;
  * @author Merve
  */
 public class kullaniciAyarlar extends javax.swing.JFrame {
-      
+
     /**
      * Creates new form kullaniciAyarlar
      */
-      static private String kullaniciAdi;
-      private String hemsireIsimSoyisim;
-      private String sifre;
-    
+    static private String kullaniciAdi;
+    private String hemsireIsimSoyisim;
+    private String sifre;
+    DBConnection d;
+
     public kullaniciAyarlar(String kullaniciAd) {
         initComponents();
-        this.kullaniciAdi= kullaniciAd;
-        DBConnection d = new DBConnection();
+        this.kullaniciAdi = kullaniciAd;
+        d = new DBConnection();
         hemsireIsimSoyisim = d.hemsireIsim(kullaniciAd);
         ad_soyad.setText(hemsireIsimSoyisim);
+        pozisyon.setText(d.getPozisyon(kullaniciAd));
         kullaniciAdi_txt.setText(kullaniciAd);
         sifre = d.getPassword(kullaniciAd);
         sifre_txt.setText(sifre);
-     }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -59,7 +61,8 @@ public class kullaniciAyarlar extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 2), "Kullanıcı Ayar Ekranı"));
 
@@ -170,10 +173,6 @@ public class kullaniciAyarlar extends javax.swing.JFrame {
 
         jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 255), 2));
 
-        ad_soyad.setEditable(false);
-
-        pozisyon.setEditable(false);
-
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -202,8 +201,18 @@ public class kullaniciAyarlar extends javax.swing.JFrame {
         );
 
         jButton1.setText("Güncelle");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Geri");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user.png"))); // NOI18N
 
@@ -261,7 +270,23 @@ public class kullaniciAyarlar extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.setVisible(false);
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        String hemsire = ad_soyad.getText();
+        String adSoyad[] = hemsire.split(" ");
+        d.kullaniciBilgiGuncelle(adSoyad[0], adSoyad[1], kullaniciAdi_txt.getText(), pozisyon.getText(), sifre,kullaniciAdi);
+        Ekran.hemsireIsim.setText(ad_soyad.getText());
+
+        Ekran.kullaniciAd = kullaniciAdi_txt.getText();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

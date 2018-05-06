@@ -5,23 +5,26 @@
  */
 package hemsire;
 
+import database.DBConnection;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 /**
  *
  * @author Merve
  */
 public class ajandaPaneli extends javax.swing.JPanel {
-    // DefaultTableModel dtm ;
+     DefaultTableModel dtm ;
       IsEkle yeniIs;
+        DBConnection d;
     /**
      * Creates new form ajandaPaneli
      */
     public ajandaPaneli(Ekran ekran) {
         initComponents();
-       // dtm = new DefaultTableModel();
-       //jTable2.setModel(dtm);
+        ResetDtm();
+   
+       
+   
         
     }
 
@@ -40,7 +43,7 @@ public class ajandaPaneli extends javax.swing.JPanel {
         jCalendar1 = new com.toedter.calendar.JCalendar();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        yapilanIsler = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
@@ -52,13 +55,17 @@ public class ajandaPaneli extends javax.swing.JPanel {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Takvim"));
 
+        jCalendar1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jCalendar1KeyPressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jCalendar1, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jCalendar1, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -67,12 +74,12 @@ public class ajandaPaneli extends javax.swing.JPanel {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        ajandaPaneli.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 260, 250));
+        ajandaPaneli.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 290, 250));
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Ajanda"));
 
-        jTable2.setBackground(new java.awt.Color(204, 204, 255));
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        yapilanIsler.setBackground(new java.awt.Color(204, 204, 255));
+        yapilanIsler.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {"00.00", "", null},
                 {"01.00", null, null},
@@ -118,18 +125,18 @@ public class ajandaPaneli extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jTable2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jTable2.setName(""); // NOI18N
-        jTable2.setRowHeight(35);
-        jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+        yapilanIsler.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        yapilanIsler.setName(""); // NOI18N
+        yapilanIsler.setRowHeight(35);
+        yapilanIsler.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                jTable2MousePressed(evt);
+                yapilanIslerMousePressed(evt);
             }
         });
-        jScrollPane2.setViewportView(jTable2);
-        if (jTable2.getColumnModel().getColumnCount() > 0) {
-            jTable2.getColumnModel().getColumn(0).setMaxWidth(50);
-            jTable2.getColumnModel().getColumn(2).setMaxWidth(40);
+        jScrollPane2.setViewportView(yapilanIsler);
+        if (yapilanIsler.getColumnModel().getColumnCount() > 0) {
+            yapilanIsler.getColumnModel().getColumn(0).setMaxWidth(50);
+            yapilanIsler.getColumnModel().getColumn(2).setMaxWidth(40);
         }
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -138,7 +145,7 @@ public class ajandaPaneli extends javax.swing.JPanel {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -148,7 +155,7 @@ public class ajandaPaneli extends javax.swing.JPanel {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        ajandaPaneli.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 30, 510, 350));
+        ajandaPaneli.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 30, 480, 350));
 
         jButton1.setText("İş Ekle");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -174,15 +181,23 @@ public class ajandaPaneli extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTable2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MousePressed
+    private void yapilanIslerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_yapilanIslerMousePressed
        // System.out.println(jTable2.getSelectedRow() +". satıra basıldı ");
-    }//GEN-LAST:event_jTable2MousePressed
-
+    }//GEN-LAST:event_yapilanIslerMousePressed
+  void ResetDtm() {
+        dtm = new DefaultTableModel();
+        dtm.setColumnIdentifiers(new String[]{"Saat", "Yapılan İş", "check"});
+        yapilanIsler.setModel(dtm);
+    }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-         yeniIs = new IsEkle();
+         yeniIs = new IsEkle(Ekran.kullaniciAd);
          yeniIs.setVisible(true);
          
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jCalendar1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jCalendar1KeyPressed
+          d.isler(dtm,Ekran.kullaniciAd);
+    }//GEN-LAST:event_jCalendar1KeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -193,7 +208,7 @@ public class ajandaPaneli extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable yapilanIsler;
     // End of variables declaration//GEN-END:variables
 }
