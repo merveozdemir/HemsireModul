@@ -31,7 +31,8 @@ public class Ekran extends javax.swing.JFrame {
 
     public Ekran(String kullaniciAd) {
         initComponents();
-        this.setSize(840, 580);
+        this.setSize(965, 560);
+        this.mainPanel.setSize(965, 450);
         this.kullaniciAd = kullaniciAd;
         DBConnection d = new DBConnection();
         hemsireIsimSoyisim = d.hemsireIsim(kullaniciAd);
@@ -185,7 +186,7 @@ public class Ekran extends javax.swing.JFrame {
                 .addGroup(ustPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(ustPanelLayout.createSequentialGroup()
                         .addComponent(jLabel9)
-                        .addGap(0, 183, Short.MAX_VALUE))
+                        .addGap(0, 308, Short.MAX_VALUE))
                     .addGroup(ustPanelLayout.createSequentialGroup()
                         .addGap(3, 3, 3)
                         .addComponent(jLabel4)
@@ -238,7 +239,7 @@ public class Ekran extends javax.swing.JFrame {
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 799, Short.MAX_VALUE)
+            .addGap(0, 924, Short.MAX_VALUE)
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
