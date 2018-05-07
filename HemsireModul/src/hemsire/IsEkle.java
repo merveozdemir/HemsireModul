@@ -16,6 +16,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class IsEkle extends javax.swing.JFrame {
 
+   
+
     static private String kullaniciAdi;
 
     /**
@@ -23,13 +25,19 @@ public class IsEkle extends javax.swing.JFrame {
      */
     DefaultTableModel dtm;
     DBConnection db = new DBConnection();
+    ajandaPaneli a;
 
-    public IsEkle(String kullaniciAdi) {
+    public IsEkle(String kullaniciAdi, ajandaPaneli ajanda) {
         initComponents();
-
+        this.a = ajanda;
         this.kullaniciAdi = kullaniciAdi;
     }
 
+    private IsEkle(String kullaniciAdi) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+ 
     public String getKullaniciAdi() {
         return kullaniciAdi;
     }
@@ -37,6 +45,8 @@ public class IsEkle extends javax.swing.JFrame {
     public void setKullaniciAdi(String kullaniciAdi) {
         this.kullaniciAdi = kullaniciAdi;
     }
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -187,6 +197,7 @@ public class IsEkle extends javax.swing.JFrame {
     }//GEN-LAST:event_vazgecActionPerformed
 
     private void kaydetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kaydetActionPerformed
+     
         db.connect();
         java.sql.Date date = new java.sql.Date(dateChooser.getDate().getTime());
         System.out.println(date);
@@ -200,13 +211,15 @@ public class IsEkle extends javax.swing.JFrame {
         int saattt = Integer.valueOf(timee[0]);
         LocalTime time2 = LocalTime.of(saattt, 00);
 
-
         java.sql.Time baslangicSaati = java.sql.Time.valueOf(time1);
         java.sql.Time bitisSaati = java.sql.Time.valueOf(time2);
-        db.gorevEkle(aciklama.getText(), kullaniciAdi, date, baslangicSaati, bitisSaati);
-        JOptionPane.showConfirmDialog(this, "Görev başarılı bir şekilde eklendi.");
+        a.ResetDtm();
+        db.gorevEkle(aciklama.getText(), kullaniciAdi, date, baslangicSaati, bitisSaati, a.dtm);
         
+        JOptionPane.showConfirmDialog(this, "Görev başarılı bir şekilde eklendi.");
+
         this.dispose();
+
       
     }//GEN-LAST:event_kaydetActionPerformed
 

@@ -6,6 +6,7 @@
 package hemsire;
 
 import database.DBConnection;
+import java.sql.Date;
 import javax.swing.table.DefaultTableModel;
 
 
@@ -17,14 +18,24 @@ public class ajandaPaneli extends javax.swing.JPanel {
      DefaultTableModel dtm ;
       IsEkle yeniIs;
         DBConnection d;
+        Ekran e;
     /**
      * Creates new form ajandaPaneli
      */
     public ajandaPaneli(Ekran ekran) {
+       
         initComponents();
         this.setSize(950, 450);
+        e = ekran;
+        System.out.println("kullanici adi : " + e.kullaniciAd);
+       
+        d = new DBConnection();
+        String Sdate = jCalendar1.getYearChooser().getYear() + "-" + (jCalendar1.getMonthChooser().getMonth() + 1) + "-" + jCalendar1.getDayChooser().getDay();
+        Date date = Date.valueOf(Sdate);
+        System.out.println(date);
         ResetDtm();
-   
+        d.isler(dtm, e.kullaniciAd, date);
+
        
    
         
@@ -47,9 +58,9 @@ public class ajandaPaneli extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         yapilanIsler = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jButton4 = new javax.swing.JButton();
 
         ajandaPaneli.setBackground(new java.awt.Color(255, 255, 255));
         ajandaPaneli.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 255)), "Ajanda "));
@@ -77,48 +88,47 @@ public class ajandaPaneli extends javax.swing.JPanel {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jCalendar1, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
+                .addComponent(jCalendar1, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        ajandaPaneli.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 400, 320));
+        ajandaPaneli.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 400, 330));
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Ajanda"));
 
-        yapilanIsler.setBackground(new java.awt.Color(204, 204, 255));
         yapilanIsler.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"00.00", ""},
-                {"01.00", null},
-                {"02.00", null},
-                {"03.00", null},
-                {"04.00", null},
-                {"05.00", null},
-                {"06.00", null},
-                {"07.00", null},
-                {"08.00", null},
-                {"09.00", null},
-                {"10.00", null},
-                {"11.00", null},
-                {"12.00", ""},
-                {"13.00", null},
-                {"14.00", null},
-                {"15.00", null},
-                {"16.00", null},
-                {"17.00", null},
-                {"18.00", null},
-                {"19.00", null},
-                {"20.00", null},
-                {"21.00", null},
-                {"22.00", null},
-                {"23.00", null}
+                {"00.00", "", null},
+                {"01.00", null, null},
+                {"02.00", null, null},
+                {"03.00", null, null},
+                {"04.00", null, null},
+                {"05.00", null, null},
+                {"06.00", null, null},
+                {"07.00", null, null},
+                {"08.00", null, null},
+                {"09.00", null, null},
+                {"10.00", null, null},
+                {"11.00", null, null},
+                {"12.00", "", null},
+                {"13.00", null, null},
+                {"14.00", null, null},
+                {"15.00", null, null},
+                {"16.00", null, null},
+                {"17.00", null, null},
+                {"18.00", null, null},
+                {"19.00", null, null},
+                {"20.00", null, null},
+                {"21.00", null, null},
+                {"22.00", null, null},
+                {"23.00", null, null}
             },
             new String [] {
-                "Saat", "Yaplıan İş"
+                "Saat", "Yaplıan İş", "Durum"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -127,7 +137,7 @@ public class ajandaPaneli extends javax.swing.JPanel {
         });
         yapilanIsler.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         yapilanIsler.setName(""); // NOI18N
-        yapilanIsler.setRowHeight(35);
+        yapilanIsler.setRowHeight(28);
         yapilanIsler.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 yapilanIslerMousePressed(evt);
@@ -136,6 +146,7 @@ public class ajandaPaneli extends javax.swing.JPanel {
         jScrollPane2.setViewportView(yapilanIsler);
         if (yapilanIsler.getColumnModel().getColumnCount() > 0) {
             yapilanIsler.getColumnModel().getColumn(0).setMaxWidth(60);
+            yapilanIsler.getColumnModel().getColumn(2).setMaxWidth(140);
         }
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -162,11 +173,7 @@ public class ajandaPaneli extends javax.swing.JPanel {
                 jButton1ActionPerformed(evt);
             }
         });
-        ajandaPaneli.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 360, 120, -1));
-
-        jButton2.setText("İş Ara");
-        ajandaPaneli.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 370, 90, -1));
-        ajandaPaneli.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 370, 190, -1));
+        ajandaPaneli.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 370, 120, -1));
 
         jButton3.setText("İşleri Görüntüle");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -174,24 +181,38 @@ public class ajandaPaneli extends javax.swing.JPanel {
                 jButton3ActionPerformed(evt);
             }
         });
-        ajandaPaneli.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, 140, -1));
+        ajandaPaneli.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 370, 140, -1));
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Yapıldı", "Yapılmadı" }));
+        ajandaPaneli.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 370, 160, -1));
+
+        jButton4.setText("Durum Bildir");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        ajandaPaneli.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 370, 140, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(ajandaPaneli, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(ajandaPaneli, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(ajandaPaneli, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jCalendar1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jCalendar1KeyPressed
-        d.isler(dtm,Ekran.kullaniciAd);
+      
     }//GEN-LAST:event_jCalendar1KeyPressed
 
     private void yapilanIslerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_yapilanIslerMousePressed
@@ -199,33 +220,63 @@ public class ajandaPaneli extends javax.swing.JPanel {
     }//GEN-LAST:event_yapilanIslerMousePressed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        yeniIs = new IsEkle(Ekran.kullaniciAd);
+        yeniIs = new IsEkle(e.kullaniciAd,this);
         yeniIs.setVisible(true);
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        jCalendar1.getYearChooser().getYear();
-        jCalendar1.getDayChooser().getDay();
-        jCalendar1.getMonthChooser().getMonth();
+     
+        ResetDtm();
+        String Sdate = jCalendar1.getYearChooser().getYear() + "-" + (jCalendar1.getMonthChooser().getMonth() + 1) + "-" + jCalendar1.getDayChooser().getDay();
+        System.out.println("Bugün: " + Sdate);
+        Date date = Date.valueOf(Sdate);
+        d.isler(dtm, e.kullaniciAd, date);
+
 
     }//GEN-LAST:event_jButton3ActionPerformed
-  void ResetDtm() {
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+       
+        String Sdate = jCalendar1.getYearChooser().getYear() + "-" + (jCalendar1.getMonthChooser().getMonth() + 1) + "-" + jCalendar1.getDayChooser().getDay();
+        Date date = Date.valueOf(Sdate);
+        
+        String durum = jComboBox1.getSelectedItem().toString();
+        System.out.println(durum);
+        
+        String saat = dtm.getValueAt(yapilanIsler.getSelectedRow(), 0).toString();
+        System.out.println(saat);
+        String x[] = saat.split(":");
+        System.out.println(x[0]);
+        
+        ResetDtm();
+        d.gorevDurumGuncelle(Integer.parseInt(x[0]), e.kullaniciAd, date, durum, dtm);
+
+    }                                        
+    void ResetDtm() {
+
         dtm = new DefaultTableModel();
-        dtm.setColumnIdentifiers(new String[]{"Saat", "Yapılan İş", "check"});
+        dtm.setColumnIdentifiers(new String[]{"Saat", "Yapılan İş", "Durumu"});
         yapilanIsler.setModel(dtm);
-    }
+        for (int i = 0; i < 24; i++) {
+            dtm.addRow(new Object[]{i+":00", "",""});
+        }
+
+        
+        
+    }//GEN-LAST:event_jButton4ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ajandaPaneli;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private com.toedter.calendar.JCalendar jCalendar1;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTable yapilanIsler;
     // End of variables declaration//GEN-END:variables
 }

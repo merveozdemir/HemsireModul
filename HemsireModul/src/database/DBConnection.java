@@ -14,13 +14,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -234,7 +231,9 @@ public class DBConnection {
 
     }
 
-    public void gorevEkle(String aciklama, String kullaniciAd, java.sql.Date tarih, java.sql.Time baslangic, java.sql.Time bitis) {
+  
+
+    public void gorevEkle(String aciklama, String kullaniciAd, java.sql.Date tarih, java.sql.Time baslangic, java.sql.Time bitis, DefaultTableModel dtm) {
         int kullaniciId = 0;
         int gorevid = 0;
 
@@ -269,6 +268,7 @@ public class DBConnection {
             ps.setTime(6, baslangic);
 
             ps.executeUpdate();
+            isler(dtm, kullaniciAd, tarih);
         } catch (SQLException ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -339,30 +339,40 @@ public class DBConnection {
 
     }
 
-    public void isler(DefaultTableModel dtm, String kullaniciAd) {
-//Saat", "Yapılan İş", "check"
-        String sql = "SELECT * FROM a.GOREV WHERE HEMSIREID IN (SELECT HEMSIREID FROM a.HEMSIRE WHERE KULLANICIADI='" + kullaniciAd + "'";
+   
+    public void isler(DefaultTableModel dtm, String kullaniciAd, java.sql.Date tarih) {
+
+        String sql = "SELECT * FROM a.GOREV WHERE HEMSIREID IN (SELECT HEMSIREID FROM a.HEMSIRE WHERE KULLANICIADI='" + kullaniciAd + "')";
         Statement s;
         Time saat;
         String gorev;
         String gorevDurum;
+        String satir;
         int satirNo;
         try {
             s = connect().createStatement();
             ResultSet rs = s.executeQuery(sql);
+            int i = 0;
             while (rs.next()) {
-                gorev = rs.getString("GOREVADI");
-                saat = rs.getTime("BASLANGICSAATI");
-                satirNo = saat.toString().lastIndexOf(".");
-                gorevDurum = rs.getString("GOREVDURUM");
-                dtm.setValueAt(gorev, satirNo, 1);
-
+                if (rs.getDate("TARIH").equals(tarih)) {
+                    gorev = rs.getString("GOREVADI");
+                    saat = rs.getTime("BASLANGICSAATI");
+                    satir = saat.toString().charAt(0) + "" + saat.toString().charAt(1);
+                    satirNo = Integer.parseInt(satir);
+                    gorevDurum = rs.getString("GOREVDURUM");
+                    System.out.println("satir no : " + satirNo);
+                   
+                            dtm.setValueAt(gorev, satirNo, 1);
+                            dtm.setValueAt(gorevDurum, satirNo, 2);
+                          
+                }
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
 
     public int atanmisHastaSayisi() {
         int atanmisHastaSayisi = 0;
@@ -508,14 +518,14 @@ public class DBConnection {
         }
     }
 
-    public void sorgula(DefaultTableModel dtmSorgu,String hastaNo, String hastaAdi, String hastaSoyadi) {
+    public void sorgula(DefaultTableModel dtmSorgu, String hastaNo) {
         boolean hastaNoMu = false;
         boolean hastaAdiMi = false;
         boolean hastaSoyadiMi = false;
 
         if (!hastaNo.equals(" ")) {
             hastaNoMu = true;
-           int hastaTc=Integer.valueOf(hastaNo);
+            int hastaTc = Integer.valueOf(hastaNo);
             String sql = "SELECT * FROM a.HASTA where HASTAID=" + hastaTc;
             Statement s;
 
@@ -524,64 +534,107 @@ public class DBConnection {
                 ResultSet rs = s.executeQuery(sql);
                 while (rs.next()) {
 
-                    dtmSorgu.addRow(new Object[]{rs.getInt("HASTAID"), rs.getString("HASTAADI"), rs.getString("HASTASOYADI"),rs.getString("DOKTOR")});
+                    dtmSorgu.addRow(new Object[]{rs.getInt("HASTAID"), rs.getString("HASTAADI"), rs.getString("HASTASOYADI"), rs.getString("DOKTOR")});
                 }
 
             } catch (SQLException ex) {
                 Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } else if (!hastaAdi.equals(" ")) {
-            hastaAdiMi = true;
-            String sql = "SELECT * FROM a.HASTA where  HASTAADI='" + hastaAdi + "'";
-            Statement s;
+        } 
 
-            try {
-                s = connect().createStatement();
-                ResultSet rs = s.executeQuery(sql);
-                while (rs.next()) {
+    }
 
-                 dtmSorgu.addRow(new Object[]{rs.getInt("HASTAID"), rs.getString("HASTAADI"), rs.getString("HASTASOYADI"),rs.getString("DOKTOR")});
-                }
 
-            } catch (SQLException ex) {
-                Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+    public void shiftListesi(DefaultListModel dlm, int hastaId) {
+        String hemsireAdSoyad,hastaAdSoyad;
+ String sql = "SELECT * FROM a.HEMSIRE WHERE ID IN (SELECT HEMSIREID FROM a.HEMSIRE_HASTA WHERE HASTAID = " + hastaId +")";
+      
+        Statement s;
+
+        try {
+            s = connect().createStatement();
+            ResultSet rs = s.executeQuery(sql);
+            while (rs.next()) {
+                hemsireAdSoyad = rs.getString("ADI") + " ";
+                hemsireAdSoyad += rs.getString("SOYADI");
+                
+                dlm.addElement(hemsireAdSoyad);
             }
-        } else if (!hastaSoyadi.equals(" ")) {
-            hastaSoyadiMi = true;
-            String sql = "SELECT * FROM a.HASTA where  HASTASOYADI='" + hastaSoyadi + "'";
-            Statement s;
 
-            try {
-                s = connect().createStatement();
-                ResultSet rs = s.executeQuery(sql);
-                while (rs.next()) {
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
-                     dtmSorgu.addRow(new Object[]{rs.getInt("HASTAID"), rs.getString("HASTAADI"), rs.getString("HASTASOYADI"),rs.getString("DOKTOR")});
+ 
+
+    public void gorevDurumGuncelle(int timeNo, String kullaniciAd, java.sql.Date tarih, String durum, DefaultTableModel dtm) {
+        String sql = "SELECT * FROM a.GOREV WHERE HEMSIREID IN (SELECT HEMSIREID FROM a.HEMSIRE WHERE KULLANICIADI='" + kullaniciAd + "')";
+        Statement s;
+        Time saat;
+        String gorev;
+        String gorevDurum;
+        String satir;
+        int satirNo;
+        int gorevid;
+        try {
+            s = connect().createStatement();
+            ResultSet rs = s.executeQuery(sql);
+            int i = 0;
+            while (rs.next()) {
+                if (rs.getDate("TARIH").equals(tarih)) {
+                    gorev = rs.getString("GOREVADI");
+                    saat = rs.getTime("BASLANGICSAATI");
+                    satir = saat.toString().charAt(0) + "" + saat.toString().charAt(1);
+                    satirNo = Integer.parseInt(satir);
+                    gorevid = rs.getInt("GOREVID");
+                    gorevDurum = rs.getString("GOREVDURUM");
+                    System.out.println("satir no : " + satirNo);
+                    
+                        if (satirNo == timeNo) {
+                            try {
+                              String sql2 = "UPDATE a.gorev SET gorevdurum=?  WHERE gorevid =" + gorevid;
+                                PreparedStatement ps = connect().prepareStatement(sql2);
+                                ps.setString(1, durum);
+                                ps.executeUpdate();
+                                
+                            } catch (SQLException ex){
+                                Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            isler(dtm, kullaniciAd, tarih);
+                            break;
+                        
+                    }
                 }
-
-            } catch (SQLException ex) {
-                Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
             }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
 
-    public void sorgula(DefaultTableModel dtmSorgu,String hastaAdi) {
-        //"TC No", "Hasta Adı", "Hasta Soyadı", "Doktor Adı"
- String sql = "SELECT * FROM a.HASTA where  HASTAADI='" + hastaAdi + "'";
-            Statement s;
+    public void hastaListesi(DefaultListModel dlm, String kullaniciAd) {
+            String hastaAdSoyad;
+ String sql = "SELECT * FROM HASTA WHERE HASTAID IN (SELECT HASTAID FROM HEMSIRE_HASTA WHERE HEMSIREID IN (SELECT ID FROM HEMSIRE WHERE KULLANICIADI = '" +kullaniciAd+"'))";
+      
+        Statement s;
 
-            try {
-                s = connect().createStatement();
-                ResultSet rs = s.executeQuery(sql);
-                while (rs.next()) {
-
-                    dtmSorgu.addRow(new Object[]{rs.getInt("HASTAID"), rs.getString("HASTAADI"), rs.getString("HASTASOYADI"),rs.getString("DOKTOR")});
-                }
-
-            } catch (SQLException ex) {
-                Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        try {
+            s = connect().createStatement();
+            ResultSet rs = s.executeQuery(sql);
+            while (rs.next()) {
+                hastaAdSoyad = rs.getString("HASTAADI") + " ";
+                hastaAdSoyad += rs.getString("HASTASOYADI");
+                
+                dlm.addElement(hastaAdSoyad);
             }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
+
+
 
 }

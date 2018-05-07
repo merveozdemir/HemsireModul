@@ -6,12 +6,9 @@
 package hemsire;
 
 import database.DBConnection;
-import java.util.List;
 import javax.swing.DefaultListModel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import sun.swing.table.DefaultTableCellHeaderRenderer;
+
 
 /**
  *
@@ -225,11 +222,21 @@ public class shiftYonetimiPaneli extends javax.swing.JPanel {
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/hemsireDegistirIcon.png"))); // NOI18N
         jButton2.setText("Hemşire Ata");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setBackground(new java.awt.Color(51, 102, 255));
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/shiftListesi.png"))); // NOI18N
         jButton3.setText("Shift Listesi");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton5.setBackground(new java.awt.Color(51, 102, 255));
         jButton5.setForeground(new java.awt.Color(255, 255, 255));
@@ -281,11 +288,17 @@ public class shiftYonetimiPaneli extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(25, 25, 25))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -298,7 +311,7 @@ public class shiftYonetimiPaneli extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void goruntuleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goruntuleActionPerformed
- ResetDtm();
+        ResetDtm();
 
         if (hemsilerListesi.getSelectedIndex() == 0) { //tüm hastalar
             d.ListeleTumHastalar(dtm);
@@ -308,13 +321,32 @@ public class shiftYonetimiPaneli extends javax.swing.JPanel {
         } else if (hemsilerListesi.getSelectedIndex() == 2) {
 
             d.atanmamisHastalar(dtm);
-        }       
+        }
 
     }//GEN-LAST:event_goruntuleActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
+        int hastaId = Integer.valueOf(hastaTablosu.getValueAt(hastaTablosu.getSelectedRow(), 1).toString());
+        HastaKarti ha = new HastaKarti(hastaId);
+        ha.setVisible(true);
+
+
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+        int hastaId = Integer.valueOf(hastaTablosu.getValueAt(hastaTablosu.getSelectedRow(), 1).toString());
+        HemsireAta ha = new HemsireAta(hastaId);
+        ha.setVisible(true);
+
+
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+     int hastaId = Integer.valueOf(hastaTablosu.getValueAt(hastaTablosu.getSelectedRow(), 1).toString());
+        ShiftListesi s=new ShiftListesi(hastaId);
+    s.setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
