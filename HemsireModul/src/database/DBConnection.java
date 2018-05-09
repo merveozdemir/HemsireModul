@@ -635,6 +635,39 @@ public class DBConnection {
         }
     }
 
+    public void hemsireninHastalari(DefaultTableModel dtm, String kullaniciAd) {
+             String hastaAdSoyad;
+ String sql = "SELECT * FROM HASTA WHERE HASTAID IN (SELECT HASTAID FROM HEMSIRE_HASTA WHERE HEMSIREID IN (SELECT ID FROM HEMSIRE WHERE KULLANICIADI = '" +kullaniciAd+"'))";
+      
+
+        int hastaId = 0;
+        int odaNo = 0;
+        String doktor = "";
+
+        Statement s;
+
+        try {
+            s = connect().createStatement();
+            ResultSet rs = s.executeQuery(sql);
+            while (rs.next()) {
+                hastaAdSoyad = rs.getString("HASTAADI") + " ";
+                hastaAdSoyad += rs.getString("HASTASOYADI");
+                hastaId = rs.getInt("HASTAID");
+                odaNo = rs.getInt("HASTAODANO");
+                doktor = rs.getString("DOKTOR");
+                System.out.println(hastaAdSoyad);
+                System.out.println(hastaId);
+                System.out.println(odaNo);
+                System.out.println(doktor);
+                dtm.addRow(new Object[]{odaNo, hastaId, hastaAdSoyad, doktor});
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+     
+    }
+
 
 
 }

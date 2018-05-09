@@ -216,7 +216,7 @@ public class IsEkle extends javax.swing.JFrame {
         a.ResetDtm();
         db.gorevEkle(aciklama.getText(), kullaniciAdi, date, baslangicSaati, bitisSaati, a.dtm);
         
-        JOptionPane.showConfirmDialog(this, "Görev başarılı bir şekilde eklendi.");
+        JOptionPane.showMessageDialog(this, "Görev başarılı bir şekilde eklendi.");
 
         this.dispose();
 

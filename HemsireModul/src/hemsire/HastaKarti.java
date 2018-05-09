@@ -67,7 +67,6 @@ public class HastaKarti extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
-        txtMail = new javax.swing.JTextField();
         cmbHepatit = new javax.swing.JComboBox();
         cmbDiyabet = new javax.swing.JComboBox();
         cmbHiv = new javax.swing.JComboBox();
@@ -96,9 +95,10 @@ public class HastaKarti extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         btnIptal = new javax.swing.JButton();
         btnKaydet = new javax.swing.JButton();
+        txtMail = new javax.swing.JTextField();
         txtTelefon = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -115,9 +115,6 @@ public class HastaKarti extends javax.swing.JFrame {
         jLabel17.setText("E-mail");
         jLabel17.setMaximumSize(new java.awt.Dimension(15, 5));
         getContentPane().add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 130, 70, 20));
-
-        txtMail.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        getContentPane().add(txtMail, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 130, 140, -1));
 
         cmbHepatit.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         cmbHepatit.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Hepatit Negatif", "HCV (+)", "HbsAg (+)", "HCV (+) ve HbsAg (+)" }));
@@ -177,10 +174,10 @@ public class HastaKarti extends javax.swing.JFrame {
                 txtAdActionPerformed(evt);
             }
         });
-        jPanel1.add(txtAd, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 20, 60, 20));
+        jPanel1.add(txtAd, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 10, 60, 30));
 
         txtSoyad.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jPanel1.add(txtSoyad, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 20, 60, 20));
+        jPanel1.add(txtSoyad, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 10, 60, 30));
 
         txtTc.setEditable(false);
         txtTc.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -196,7 +193,7 @@ public class HastaKarti extends javax.swing.JFrame {
 
         txtAnneAd.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jPanel1.add(txtAnneAd, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 110, 130, -1));
-        jPanel1.add(dateDogumTarihi, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 140, 130, -1));
+        jPanel1.add(dateDogumTarihi, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 140, 150, -1));
 
         txtDogumYeri.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jPanel1.add(txtDogumYeri, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 170, 130, -1));
@@ -230,10 +227,10 @@ public class HastaKarti extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setText("Telefon");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 140, 60, 20));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 150, 60, 20));
 
         jTextField1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 140, 140, -1));
+        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 150, 140, 20));
 
         btnIptal.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnIptal.setText("İptal");
@@ -242,7 +239,7 @@ public class HastaKarti extends javax.swing.JFrame {
                 btnIptalActionPerformed(evt);
             }
         });
-        jPanel1.add(btnIptal, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 230, 80, -1));
+        jPanel1.add(btnIptal, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 250, 170, -1));
 
         btnKaydet.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnKaydet.setText("Değişiklikleri Kaydet");
@@ -251,9 +248,12 @@ public class HastaKarti extends javax.swing.JFrame {
                 btnKaydetActionPerformed(evt);
             }
         });
-        jPanel1.add(btnKaydet, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 190, 180, -1));
+        jPanel1.add(btnKaydet, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 210, 170, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 540, 340));
+        txtMail.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jPanel1.add(txtMail, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 120, 140, 20));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 540, 350));
         getContentPane().add(txtTelefon, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 160, 136, -1));
 
         setSize(new java.awt.Dimension(581, 420));
